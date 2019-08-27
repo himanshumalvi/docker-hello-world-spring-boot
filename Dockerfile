@@ -8,9 +8,9 @@ MAINTAINER himanshumalviya2010@gmail.com
 EXPOSE 8080
 
 #default command
-ENTRYPOINT ["java", "-jar", "hello-world-0.1.0.jar"]
+ENTRYPOINT ["java", "-jar", "hello-world.jar"]
 
 #copy hello world to docker image
-ADD target/hello-world-0.1.0.jar hello-world-0.1.0.jar
+ADD target/hello-world.jar hello-world.jar
 
 RUN ["/bin/bash", "-c", "echo hello"]
