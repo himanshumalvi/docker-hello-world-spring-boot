@@ -6,11 +6,7 @@ MAINTAINER himanshumalviya2010@gmail.com
 
 #expose port 8080
 EXPOSE 8080
-
-#default command
-ENTRYPOINT ["java", "-jar", "hello-world.jar"]
-
-#copy hello world to docker image
-ADD target/hello-world.jar hello-world.jar
-
-RUN ["/bin/bash", "-c", "echo hello"]
+VOLUME /tmp
+ARG JAR_FILE
+COPY ${JAR_FILE} hello-world.jar
+ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom","-jar","/hello-world.jar"]

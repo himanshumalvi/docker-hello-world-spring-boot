@@ -33,6 +33,7 @@
 	</dependencies>
 
 	<properties>
+		<jar_file>${project.build.directory}/${project.build.finalName}.jar</jar_file>
 		<start-class>com.dockerforjavadevelopers.hello.Application</start-class>
 	</properties>
 

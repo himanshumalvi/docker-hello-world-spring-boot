@@ -53,5 +53,15 @@ $ curl [IPAddress]:8080
 the respone should be
 ```
 Hello World
+
+#Himanshu Malvi Notes
+
+1> docker build -t="hello-world" .
+2> docker run -p 8080:8080 -it --rm hello-world-java
+docker ps -a
+docker images
+1> docker commit <containerID> <Repo>:<tag name>
+2> docker push <Repo>:<Tag name>
+
 ```
 
