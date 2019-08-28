@@ -2,6 +2,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>com.dockerforjavadevelopers</groupId>
@@ -17,6 +18,12 @@
 		<relativePath />
 	</parent>
 
+	<properties>
+		<jar_file>${project.build.directory}/${project.build.finalName}.jar</jar_file>
+		<start-class>com.dockerforjavadevelopers.hello.Application</start-class>
+		<commons-compress-version>1.15</commons-compress-version>
+	</properties>
+
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -26,16 +33,37 @@
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
-			<version>4.12</version>
+			<version>4.13-beta-3</version>
 			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>commons-io</groupId>
+			<artifactId>commons-io</artifactId>
+			<version>2.6</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-collections4</artifactId>
+			<version>4.0</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-lang3</artifactId>
+			<version>3.9</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-compress</artifactId>
+			<version>${commons-compress-version}</version>
+		</dependency>
+		<dependency>
+			<groupId>commons-beanutils</groupId>
+			<artifactId>commons-beanutils</artifactId>
 		</dependency>
 
 	</dependencies>
 
-	<properties>
-		<jar_file>${project.build.directory}/${project.build.finalName}.jar</jar_file>
-		<start-class>com.dockerforjavadevelopers.hello.Application</start-class>
-	</properties>
 
 	<build>
 		<plugins>
@@ -44,23 +72,27 @@
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
 			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>versions-maven-plugin</artifactId>
+				<version>2.7</version>
+				<configuration>
+					<excludes>
+						<exclude>org.apache.commons:commons-collections4</exclude>
+					</excludes>
+				</configuration>
+			</plugin>
+			<plugin>
 				<groupId>com.spotify</groupId>
 				<artifactId>dockerfile-maven-plugin</artifactId>
 				<version>1.4.0</version>
 				<configuration>
 					<repository>dockerhimanshumalvi/dockerhimanshumalvi/${project.artifactId}</repository>
-
-					<!-- <authConfig>
-						<push>
-							<username>dockerhimanshumalvi</username>
-							<password>Shivi@123</password>
-						</push>
-					</authConfig> -->
-
 					<tag>${project.version}</tag>
+					<imageTags>
+						<imageTag>${project.build.finalName}-${project.version}</imageTag>
+					</imageTags>
 					<useMavenSettingsForAuth>true</useMavenSettingsForAuth>
 					<skip>false</skip>
-
 					<buildArgs>
 						<JAR_FILE>target/${project.build.finalName}.jar</JAR_FILE>
 					</buildArgs>
@@ -71,7 +103,7 @@
 						<goals>
 							<goal>build</goal>
 						</goals>
-					</execution>					
+					</execution>
 					<execution>
 						<id>tag-version</id>
 						<goals>
